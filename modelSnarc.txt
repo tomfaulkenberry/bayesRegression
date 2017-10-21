@@ -1,0 +1,22 @@
+model{
+
+# model of data
+for (i in 1:ns){  # subject loop
+  for (j in 1:4){  # number loop
+    dRT[i,j] ~ dnorm(mu[i,j],inv.var)
+    mu[i,j] <- a[i] + b[i]*num[j]
+  }
+}
+
+# priors
+for (i in 1:ns){
+ a[i] ~ dunif(-200,200)
+ b[i] ~ dnorm(B, B.var)
+}
+
+B ~ dunif(-20,20)
+B.var ~ dgamma(0.01,0.01)
+inv.var ~ dgamma(0.01,0.01)
+sigma <- pow(sqrt(inv.var),-1)
+
+}
